@@ -22,11 +22,23 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
  * @author Gary Russell
  * @author Scott Deeg
  * @author Wayne Lund
+ * Alio 에서는 KKO - AlioSendRequestConsumer 에
+  @RabbitListener(queues = "#{requestQueueName}")
+  	public void getMessage(String request) {	service.sendMessageAndResponseSave(request);}
+  이 처럼 선언했다.
+
  */
+
 @RabbitListener(queues = "hello")
+// Queue 이름을 전달하여, 해당 큐를 리스닝 하도록 한다.
+// queue 이름을 지정하지 않으면, 아무 데이터도 못받을까? 못받는다.
+// sender queue name  O , receiver queue name  O  성공
+// sender queue name  O , receiver queue name  x  실패
+// sender queue name  x , receiver queue name  x  실패
 public class Tut1Receiver {
 
 	@RabbitHandler
+	//We then annotate our receive method with @RabbitHandler passing in the payload that has been pushed to the queue
 	public void receive(String in) {
 		System.out.println(" [x] Received '" + in + "'");
 	}

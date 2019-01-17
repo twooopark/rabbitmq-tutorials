@@ -24,6 +24,9 @@ import org.springframework.context.annotation.Profile;
  * @author Gary Russell
  * @author Scott Deeg
  * @author Wayne Lund
+
+ hello 이름의 큐 생성, receiver, sender 를  beans로 정의
+
  */
 @Profile({"tut1","hello-world"})
 @Configuration
