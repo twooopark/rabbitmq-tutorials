@@ -34,14 +34,14 @@ public class Tut2Receiver {
 
 	@RabbitHandler
 	public void receive(String in) throws InterruptedException {
-		StopWatch watch = new StopWatch();
+		StopWatch watch = new StopWatch(); //1초마다 수행됨을 확인하기 위함.
 		watch.start();
 		System.out.println("instance " + this.instance + " [x] Received '" + in + "'");
 		doWork(in);
 		watch.stop();
 		System.out.println("instance " + this.instance + " [x] Done in " + watch.getTotalTimeSeconds() + "s");
 	}
-
+// 점의 갯수만큼 작업소요시간이 증가한다 (...9는 3초가 걸린다)
 	private void doWork(String in) throws InterruptedException {
 		for (char ch : in.toCharArray()) {
 			if (ch == '.') {
