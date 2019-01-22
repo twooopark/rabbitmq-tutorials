@@ -22,10 +22,10 @@ import org.springframework.util.StopWatch;
 /**
  * @author Gary Russell
  * @author Scott Deeg
+2222
  */
 @RabbitListener(queues = "tut.hello")
 public class Tut2Receiver {
-
 	private final int instance;
 
 	public Tut2Receiver(int i) {
