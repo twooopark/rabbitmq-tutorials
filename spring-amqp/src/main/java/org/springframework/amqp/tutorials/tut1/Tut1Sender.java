@@ -23,12 +23,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 /**
  * @author Gary Russell
  * @author Scott Deeg
+ * 1111
  */
 public class Tut1Sender {
 
 	@Autowired
 	private RabbitTemplate template;
-11
+
 	@Autowired
 	private Queue queue;
 	
