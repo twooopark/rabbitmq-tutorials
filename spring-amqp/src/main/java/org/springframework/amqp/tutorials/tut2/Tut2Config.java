@@ -106,6 +106,15 @@ MessagePostProcessor는 실제 전달하기 전에 적용되도록 하는 절차
 더 강력한 보장을 위해서는 https://www.rabbitmq.com/confirms.html를 확인...
 
 
+PUBSUB
+한 메시지를 여러 Consumer가 동시에 받아 사용해야 하는 경우에 사용.
+exchanges, routionKey,
+publish 할때, exchage나 routionKey 값이 잇어야한다.
+두개의 값이나 둘중 하나의 값으로 Queue에 라우팅 되기 때문임.
+exchange에서 queue로는 binding을 통해 연결한다.
+
+이
+
 
 		*/
 		@Bean
