@@ -15,11 +15,7 @@
  */
 package org.springframework.amqp.tutorials.tut3;
 
-import org.springframework.amqp.core.AnonymousQueue;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,26 +24,28 @@ import org.springframework.context.annotation.Profile;
  * @author Gary Russell
  * @author Scott Deeg
  */
-@Profile({"fanout-T", "pub-sub", "publish-subscribe"})
+@Profile({"direct-T", "pub-sub", "publish-subscribe"})
 @Configuration
 public class Tut3Config {
 	@Bean
-	public FanoutExchange fanout() {
-		return new FanoutExchange("rmq.fanout");
+	public DirectExchange direct() {
+		return new DirectExchange("rmq.direct");
 	}
 	@Profile("receiver")
 	private static class ReceiverConfig {
 		@Bean
-		public Queue fanoutQueue1() {return new Queue("rmq.fanout.queue1"); }
+		public Queue directQueue1() {return new Queue("rmq.direct.queue1"); }
 		@Bean
-		public Queue fanoutQueue2() {return new Queue("rmq.fanout.queue2"); }
+		public Queue directQueue2() {return new Queue("rmq.direct.queue2"); }
 		@Bean
-		public Queue fanoutQueue3() {return new Queue("rmq.fanout.queue3"); }
+		public Queue directQueue3() {return new Queue("rmq.direct.queue3"); }
 
 		@Bean
-		public Binding binding1(FanoutExchange fanout, Queue fanoutQueue1) {return BindingBuilder.bind(fanoutQueue1).to(fanout); }
+		public Binding binding1(DirectExchange direct, Queue directQueue1) {return BindingBuilder.bind(directQueue1).to(direct).with("rmq.direct"); }
 		@Bean
-		public Binding binding2(FanoutExchange fanout, Queue fanoutQueue2) {return BindingBuilder.bind(fanoutQueue2).to(fanout); }
+		public Binding binding2(DirectExchange direct, Queue directQueue2) {return BindingBuilder.bind(directQueue2).to(direct).with("rmq.direct"); }
+		@Bean
+		public Binding binding3(DirectExchange direct, Queue directQueue3) {return BindingBuilder.bind(directQueue3).to(direct).with("rmq.direct"); }
 		@Bean
 		public Tut3Receiver receiver() {
 			return new Tut3Receiver();

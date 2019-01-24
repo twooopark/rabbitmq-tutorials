@@ -15,7 +15,7 @@
  */
 package org.springframework.amqp.tutorials.tut3;
 
-import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,7 +31,7 @@ public class Tut3Sender {
 	@Autowired
 	private RabbitTemplate template;
 	@Autowired
-	private FanoutExchange fanout;
+	private DirectExchange direct;
 
 	AtomicInteger count = new AtomicInteger(0);
 
@@ -41,7 +41,7 @@ public class Tut3Sender {
 		builder.append(count.incrementAndGet());
 		String message = builder.toString();
 		//convertAndSend(String exchange, String routingKey, Object object)
-		template.convertAndSend(fanout.getName(), "", message);
+		template.convertAndSend(direct.getName(), "rmq.direct", message);
 		System.out.println(" [x] Sent '" + message + "'");
 	}
 }

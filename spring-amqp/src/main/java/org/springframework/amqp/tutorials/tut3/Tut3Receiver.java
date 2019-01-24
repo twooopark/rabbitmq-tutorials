@@ -23,15 +23,15 @@ import org.springframework.util.StopWatch;
  * @author Scott Deeg
  */
 public class Tut3Receiver {
-	@RabbitListener(queues = "rmq.fanout.queue1")
+	@RabbitListener(queues = "rmq.direct.queue1")
 	public void receive1(String in) {
 		receive(in, 1);
 	}
-	@RabbitListener(queues = "rmq.fanout.queue2")
+	@RabbitListener(queues = "rmq.direct.queue2")
 	public void receive2(String in) {
 		receive(in, 2);
 	}
-	@RabbitListener(queues = "rmq.fanout.queue3")
+	@RabbitListener(queues = "rmq.direct.queue3")
 	public void receive3(String in) {
 		receive(in, 3);
 	}
