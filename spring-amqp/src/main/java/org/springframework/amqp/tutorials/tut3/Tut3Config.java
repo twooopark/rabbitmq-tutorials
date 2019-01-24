@@ -24,12 +24,12 @@ import org.springframework.context.annotation.Profile;
  * @author Gary Russell
  * @author Scott Deeg
  */
-@Profile({"direct-T", "pub-sub", "publish-subscribe"})
+@Profile({"topic-T", "pub-sub", "publish-subscribe"})
 @Configuration
 public class Tut3Config {
 	@Bean
-	public DirectExchange direct() {
-		return new DirectExchange("rmq.directName");
+	public TopicExchange topic() {
+		return new TopicExchange("rmq.topicName");
 	}
 	@Profile("receiver")
 	private static class ReceiverConfig {
@@ -41,11 +41,11 @@ public class Tut3Config {
 		public Queue autoDeleteQueue3() {return new AnonymousQueue();	}
 
 		@Bean
-		public Binding binding1(DirectExchange direct, Queue autoDeleteQueue1) {return BindingBuilder.bind(autoDeleteQueue1).to(direct).with("rmq.direct"); }
+		public Binding binding1(TopicExchange topic, Queue autoDeleteQueue1) {return BindingBuilder.bind(autoDeleteQueue1).to(topic).with("rmq.topic.*"); }
 		@Bean
-		public Binding binding2(DirectExchange direct, Queue autoDeleteQueue2) {return BindingBuilder.bind(autoDeleteQueue2).to(direct).with("rmq.direct2"); }
+		public Binding binding2(TopicExchange topic, Queue autoDeleteQueue2) {return BindingBuilder.bind(autoDeleteQueue2).to(topic).with("rmq.topic2"); }
 		@Bean
-		public Binding binding3(DirectExchange direct, Queue autoDeleteQueue3) {return BindingBuilder.bind(autoDeleteQueue3).to(direct).with("rmq.direct.3"); }
+		public Binding binding3(TopicExchange topic, Queue autoDeleteQueue3) {return BindingBuilder.bind(autoDeleteQueue3).to(topic).with("rmq.topic.3"); }
 		@Bean
 		public Tut3Receiver receiver() {
 			return new Tut3Receiver();
