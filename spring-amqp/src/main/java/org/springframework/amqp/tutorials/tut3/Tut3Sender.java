@@ -28,30 +28,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Arnaud Cogoluègnes
  */
 public class Tut3Sender {
-
 	@Autowired
 	private RabbitTemplate template;
-
 	@Autowired
 	private FanoutExchange fanout;
-
-	AtomicInteger dots = new AtomicInteger(0);
 
 	AtomicInteger count = new AtomicInteger(0);
 
 	@Scheduled(fixedDelay = 1000, initialDelay = 500)
 	public void send() {
 		StringBuilder builder = new StringBuilder("Hello");
-		if (dots.getAndIncrement() == 3) {
-			dots.set(1);
-		}
-		for (int i = 0; i < dots.get(); i++) {
-			builder.append('.');
-		}
 		builder.append(count.incrementAndGet());
 		String message = builder.toString();
+		//convertAndSend(String exchange, String routingKey, Object object)
 		template.convertAndSend(fanout.getName(), "", message);
 		System.out.println(" [x] Sent '" + message + "'");
 	}
-
 }

@@ -28,49 +28,34 @@ import org.springframework.context.annotation.Profile;
  * @author Gary Russell
  * @author Scott Deeg
  */
-@Profile({"tut3", "pub-sub", "publish-subscribe"})
+@Profile({"fanout-T", "pub-sub", "publish-subscribe"})
 @Configuration
 public class Tut3Config {
-
 	@Bean
 	public FanoutExchange fanout() {
-		return new FanoutExchange("tut.fanout");
+		return new FanoutExchange("rmq.fanout");
 	}
-
 	@Profile("receiver")
 	private static class ReceiverConfig {
+		@Bean
+		public Queue fanoutQueue1() {return new Queue("rmq.fanout.queue1"); }
+		@Bean
+		public Queue fanoutQueue2() {return new Queue("rmq.fanout.queue2"); }
+		@Bean
+		public Queue fanoutQueue3() {return new Queue("rmq.fanout.queue3"); }
 
 		@Bean
-		public Queue autoDeleteQueue1() {
-			return new AnonymousQueue();
-		}
-
+		public Binding binding1(FanoutExchange fanout, Queue fanoutQueue1) {return BindingBuilder.bind(fanoutQueue1).to(fanout); }
 		@Bean
-		public Queue autoDeleteQueue2() {
-			return new AnonymousQueue();
-		}
-
-		@Bean
-		public Binding binding1(FanoutExchange fanout, Queue autoDeleteQueue1) {
-			return BindingBuilder.bind(autoDeleteQueue1).to(fanout);
-		}
-
-		@Bean
-		public Binding binding2(FanoutExchange fanout, Queue autoDeleteQueue2) {
-			return BindingBuilder.bind(autoDeleteQueue2).to(fanout);
-		}
-
+		public Binding binding2(FanoutExchange fanout, Queue fanoutQueue2) {return BindingBuilder.bind(fanoutQueue2).to(fanout); }
 		@Bean
 		public Tut3Receiver receiver() {
 			return new Tut3Receiver();
 		}
-
 	}
-
 	@Profile("sender")
 	@Bean
 	public Tut3Sender sender() {
 		return new Tut3Sender();
 	}
-
 }
