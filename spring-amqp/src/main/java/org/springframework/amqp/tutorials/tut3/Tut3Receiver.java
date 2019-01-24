@@ -40,5 +40,4 @@ public class Tut3Receiver {
 	public void receive(String in, int receiver) throws InterruptedException {
 		System.out.println("instance " + receiver + " [x] Received '" + in + "'");
 	}
-
 }
