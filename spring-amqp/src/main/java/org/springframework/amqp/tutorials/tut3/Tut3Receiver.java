@@ -23,19 +23,22 @@ import org.springframework.util.StopWatch;
  * @author Scott Deeg
  */
 public class Tut3Receiver {
-	@RabbitListener(queues = "rmq.direct.queue1")
-	public void receive1(String in) {
+
+	@RabbitListener(queues = "#{autoDeleteQueue1.name}")
+	public void receive1(String in) throws InterruptedException {
 		receive(in, 1);
 	}
-	@RabbitListener(queues = "rmq.direct.queue2")
-	public void receive2(String in) {
+	@RabbitListener(queues = "#{autoDeleteQueue2.name}")
+	public void receive2(String in) throws InterruptedException {
 		receive(in, 2);
 	}
-	@RabbitListener(queues = "rmq.direct.queue3")
-	public void receive3(String in) {
+	@RabbitListener(queues = "#{autoDeleteQueue3.name}")
+	public void receive3(String in) throws InterruptedException {
 		receive(in, 3);
 	}
-	public void receive(String in, int receiver) {
+
+	public void receive(String in, int receiver) throws InterruptedException {
 		System.out.println("instance " + receiver + " [x] Received '" + in + "'");
 	}
+
 }

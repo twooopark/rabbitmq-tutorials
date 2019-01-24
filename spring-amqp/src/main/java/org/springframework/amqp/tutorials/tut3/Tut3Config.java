@@ -15,7 +15,11 @@
  */
 package org.springframework.amqp.tutorials.tut3;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AnonymousQueue;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,36 +28,44 @@ import org.springframework.context.annotation.Profile;
  * @author Gary Russell
  * @author Scott Deeg
  */
-@Profile({"direct-T", "pub-sub", "publish-subscribe"})
+@Profile({"tut3", "pub-sub", "publish-subscribe"})
 @Configuration
 public class Tut3Config {
+
 	@Bean
-	public DirectExchange direct() {
-		return new DirectExchange("rmq.direct");
+	public FanoutExchange fanout() {
+		return new FanoutExchange("tut.fanout");
 	}
+
 	@Profile("receiver")
 	private static class ReceiverConfig {
-		@Bean
-		public Queue directQueue1() {return new Queue("rmq.direct.queue1"); }
-		@Bean
-		public Queue directQueue2() {return new Queue("rmq.direct.queue2"); }
-		@Bean
-		public Queue directQueue3() {return new Queue("rmq.direct.queue3"); }
 
 		@Bean
-		public Binding binding1(DirectExchange direct, Queue directQueue1) {return BindingBuilder.bind(directQueue1).to(direct).with("rmq.direct"); }
+		public Queue autoDeleteQueue1() {return new AnonymousQueue();	}
 		@Bean
-		public Binding binding2(DirectExchange direct, Queue directQueue2) {return BindingBuilder.bind(directQueue2).to(direct).with("rmq.direct"); }
+		public Queue autoDeleteQueue2() {return new AnonymousQueue();	}
 		@Bean
-		public Binding binding3(DirectExchange direct, Queue directQueue3) {return BindingBuilder.bind(directQueue3).to(direct).with("rmq.direct"); }
+		public Queue autoDeleteQueue3() {return new AnonymousQueue();	}
+
+		@Bean
+		public Binding binding1(FanoutExchange fanout, Queue autoDeleteQueue1) {
+			return BindingBuilder.bind(autoDeleteQueue1).to(fanout);
+		}
+		@Bean
+		public Binding binding2(FanoutExchange fanout, Queue autoDeleteQueue2) {
+			return BindingBuilder.bind(autoDeleteQueue2).to(fanout);
+		}
 		@Bean
 		public Tut3Receiver receiver() {
 			return new Tut3Receiver();
 		}
+
 	}
+
 	@Profile("sender")
 	@Bean
 	public Tut3Sender sender() {
 		return new Tut3Sender();
 	}
+
 }
